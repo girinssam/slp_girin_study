@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한국어 음운 학습 사이트 | 조음음운장애</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #f0f7f2;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image:
+      radial-gradient(circle at 15% 20%, #bbf7d025 0%, transparent 50%),
+      radial-gradient(circle at 85% 80%, #a7f3d025 0%, transparent 50%);
+  }
+
+  /* ── 로그인 화면 ── */
+  #login-screen {
+    width: 100%;
+    max-width: 420px;
+    padding: 1rem;
+  }
+
+  .login-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 8px 32px rgba(0, 80, 40, 0.12);
+    border: 1.5px solid #c3e6cf;
+    text-align: center;
+  }
+
+  .login-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #86efac, #34d399);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 1.2rem;
+    box-shadow: 0 4px 14px rgba(134, 239, 172, 0.45);
+  }
+
+  .login-card h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.3rem;
+    color: #1a3329;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.02em;
+  }
+
+  .login-card p {
+    font-size: 0.82rem;
+    color: #3d6652;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    text-align: left;
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #3d6652;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #c3e6cf;
+    border-radius: 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.95rem;
+    color: #1a3329;
+    background: #f0f7f2;
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .form-group input:focus {
+    border-color: #34d399;
+    background: #fff;
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 0.85rem;
+    margin-top: 0.5rem;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6ee7b7, #34d399);
+    color: #fff;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(110, 231, 183, 0.45);
+    letter-spacing: 0.02em;
+  }
+
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(110, 231, 183, 0.55);
+  }
+
+  .login-btn:active {
+    transform: translateY(0);
+  }
+
+  .error-msg {
+    display: none;
+    margin-top: 0.8rem;
+    padding: 0.6rem 1rem;
+    background: #fef2f2;
+    border: 1.5px solid #fca5a5;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: #dc2626;
+    text-align: center;
+  }
+
+  .error-msg.show { display: block; }
+
+  /* ── 메인 화면 ── */
+  #main-screen {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  #main-screen.show {
+    display: flex;
+  }
+
+  .main-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .main-logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #86efac, #34d399);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    margin: 0 auto 1rem;
+    box-shadow: 0 4px 16px rgba(134, 239, 172, 0.5);
+  }
+
+  .main-header h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.5rem;
+    color: #1a3329;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+  }
+
+  .main-header p {
+    font-size: 0.85rem;
+    color: #3d6652;
+  }
+
+  .welcome-name {
+    color: #15803d;
+    font-weight: 700;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 540px;
+  }
+
+  @media (max-width: 480px) {
+    .menu-grid {
+      grid-template-columns: 1fr;
+      max-width: 340px;
+    }
+  }
+
+  .menu-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    border: 1.5px solid #c3e6cf;
+    box-shadow: 0 4px 16px rgba(0, 80, 40, 0.08);
+    transition: all 0.25s;
+    text-decoration: none;
+    display: block;
+  }
+
+  .menu-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 32px rgba(0, 80, 40, 0.14);
+    border-color: #6ee7b7;
+  }
+
+  .menu-card:active {
+    transform: translateY(-1px);
+  }
+
+  .menu-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 1rem;
+  }
+
+  .menu-card.blue .menu-icon {
+    background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+    box-shadow: 0 4px 12px rgba(147, 197, 253, 0.5);
+  }
+
+  .menu-card.green .menu-icon {
+    background: linear-gradient(135deg, #bbf7d0, #6ee7b7);
+    box-shadow: 0 4px 12px rgba(110, 231, 183, 0.5);
+  }
+
+  .menu-card h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a3329;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+  }
+
+  .menu-card p {
+    font-size: 0.78rem;
+    color: #3d6652;
+    line-height: 1.5;
+  }
+
+  .logout-btn {
+    margin-top: 2rem;
+    padding: 0.5rem 1.4rem;
+    border: 1.5px solid #c3e6cf;
+    border-radius: 50px;
+    background: transparent;
+    color: #3d6652;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .logout-btn:hover {
+    border-color: #34d399;
+    color: #15803d;
+  }
+</style>
+</head>
+<body>
+
+<!-- 로그인 화면 -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">📚</div>
+    <h1>한국어 음운 학습 사이트</h1>
+    <p>조음음운장애 학습을 위한 통합 플랫폼</p>
+
+    <div class="form-group">
+      <label>이름</label>
+      <input type="text" id="input-name" placeholder="이름을 입력하세요" autocomplete="off" />
+    </div>
+    <div class="form-group">
+      <label>비밀번호</label>
+      <input type="password" id="input-pw" placeholder="비밀번호를 입력하세요" onkeydown="if(event.key==='Enter') login()" />
+    </div>
+
+    <button class="login-btn" onclick="login()">입장하기</button>
+    <div class="error-msg" id="error-msg">이름 또는 비밀번호가 올바르지 않습니다.</div>
+  </div>
+</div>
+
+<!-- 메인 화면 -->
+<div id="main-screen">
+  <div class="main-header">
+    <div class="main-logo">📚</div>
+    <h1>한국어 음운 학습 사이트</h1>
+    <p><span class="welcome-name" id="welcome-name"></span>님, 환영합니다!</p>
+  </div>
+
+  <div class="menu-grid">
+    <a class="menu-card blue" href="phoneme/index.html">
+      <div class="menu-icon">🔤</div>
+      <h2>음운 학습</h2>
+      <p>자음·모음의 조음 특성과 IPA, 시상단면 애니메이션 학습</p>
+    </a>
+    <a class="menu-card green" href="features/index.html">
+      <div class="menu-icon">📊</div>
+      <h2>변별자질 학습</h2>
+      <p>변별자질 의미 연결, +값 음소 고르기, 음소 구분 과제</p>
+    </a>
+  </div>
+
+  <button class="logout-btn" onclick="logout()">로그아웃</button>
+</div>
+
+<script>
+  const PASSWORD = 'slp2026';
+
+  function login() {
+    const name = document.getElementById('input-name').value.trim();
+    const pw = document.getElementById('input-pw').value;
+    const err = document.getElementById('error-msg');
+
+    if (!name) {
+      err.textContent = '이름을 입력해주세요.';
+      err.classList.add('show');
+      return;
+    }
+    if (pw !== PASSWORD) {
+      err.textContent = '비밀번호가 올바르지 않습니다.';
+      err.classList.add('show');
+      document.getElementById('input-pw').value = '';
+      return;
+    }
+
+    err.classList.remove('show');
+    sessionStorage.setItem('userName', name);
+    showMain(name);
+  }
+
+  function showMain(name) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('welcome-name').textContent = name;
+    const main = document.getElementById('main-screen');
+    main.classList.add('show');
+    document.body.style.alignItems = 'flex-start';
+    document.body.style.paddingTop = '0';
+  }
+
+  function logout() {
+    sessionStorage.removeItem('userName');
+    document.getElementById('main-screen').classList.remove('show');
+    document.getElementById('login-screen').style.display = '';
+    document.getElementById('input-name').value = '';
+    document.getElementById('input-pw').value = '';
+    document.body.style.alignItems = 'center';
+  }
+
+  // 세션 유지
+  const savedName = sessionStorage.getItem('userName');
+  if (savedName) showMain(savedName);
+</script>
+
+</body>
+</html>

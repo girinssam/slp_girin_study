@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자음과 모음의 특성 학습 사이트 | 조음음운장애</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f4f6fb;
+    --surface: #ffffff;
+    --surface2: #eef1f7;
+    --border: #d0d7e3;
+    --accent: #2563eb;
+    --accent2: #ef4444;
+    --accent3: #16a34a;
+    --accent4: #7c3aed;
+    --text: #1e2533;
+    --text-muted: #5a6478;
+    --text-dim: #a0aab8;
+    --lung: #e17055;
+    --trachea: #d4a020;
+    --nasal: #3b82f6;
+    --oral: #7c3aed;
+    --airflow: #0891b2;
+    --lips: #e11d7a;
+    --teeth: #f5f5f0;
+    --tongue: #e17055;
+    --velum: #64748b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #eef1f7 0%, #dde4f5 100%);
+  }
+
+  header h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.6rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  header p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+  }
+
+  /* MODE TABS */
+  .mode-tabs {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.7rem 0.8rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mode-tab {
+    padding: 0.45rem 0.7rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+  }
+
+  .mode-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    min-height: calc(100vh - 130px);
+  }
+
+  /* PHONEME LIST */
+  .phoneme-panel {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 1rem;
+    overflow-y: auto;
+  }
+
+  .phoneme-panel h3 {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .phoneme-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .phoneme-btn {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.3rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .phoneme-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: scale(1.05);
+  }
+
+  .phoneme-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+
+  /* Legend dots - removed */
+  .phoneme-btn::after { display: none; }
+
+  /* IPA 버튼 — 자음/모음 공통 */
+  .ipa-btn {
+    font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+  }
+  .ipa-btn sup {
+    font-size: 0.72em;
+    position: relative;
+    top: -0.55em;
+    line-height: 0;
+  }
+
+  /* 시각적으로 작게 보이는 IPA 문자 보정 */
+  .ipa-boost {
+    font-size: 1.25em;
+    line-height: 0;
+    display: inline-block;
+  }
+
+  .phoneme-group-label {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legend {
+    margin-top: 0.5rem;
+  }
+
+  .legend-title {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* CONTENT AREA */
+  .content {
+    padding: 1.5rem;
+    overflow-y: auto;
+  }
+
+  /* LEARN MODE */
+  .learn-layout {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    padding-top: 1rem;
+  }
+
+  .phoneme-hero {
+    text-align: center;
+    padding: 2rem 2.5rem;
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .phoneme-display {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 5rem;
+    color: var(--accent);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    animation: phoneme-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 글자가 길 때 자간·여백 축소 */
+  .phoneme-display.long {
+    font-size: 5rem;
+    letter-spacing: -0.08em;
+  }
+
+  .phoneme-hero.compact {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  @keyframes phoneme-pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .phoneme-name {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Properties table */
+  .props-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .props-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .props-table td {
+    padding: 0.8rem 0.9rem;
+    font-size: 1.1rem;
+  }
+
+  .props-table td:first-child {
+    color: var(--text-muted);
+    width: 40%;
+    font-size: 1.05rem;
+  }
+
+  .props-table td:last-child {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .badge-place { background: rgba(253, 121, 168, 0.15); color: #fd79a8; border: 1px solid rgba(253, 121, 168, 0.3); }
+  .badge-manner { background: rgba(88, 166, 255, 0.15); color: var(--accent); border: 1px solid rgba(88, 166, 255, 0.3); }
+  .badge-voice { background: rgba(86, 211, 100, 0.15); color: var(--accent3); border: 1px solid rgba(86, 211, 100, 0.3); }
+
+  /* SVG ANIMATION AREA */
+  .animation-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  .animation-box h3 {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  #sagittal-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .anim-controls {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    justify-content: center;
+  }
+
+  .anim-btn {
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .anim-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .anim-btn.playing { background: var(--accent); border-color: var(--accent); color: #000; }
+
+  /* Description box */
+  .desc-box {
+    grid-column: 1 / -1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+  }
+
+  .desc-box h3 {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+  }
+
+  .desc-box p {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .highlight-place { color: #fd79a8; font-weight: 600; }
+  .highlight-manner { color: var(--accent); font-weight: 600; }
+  .highlight-voice { color: var(--accent3); font-weight: 600; }
+
+  /* QUIZ MODE */
+  .quiz-container {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .quiz-phoneme-display {
+    text-align: center;
+    padding: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-phoneme-display .phoneme-display {
+    font-size: 5rem;
+  }
+
+  .quiz-form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .quiz-field {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+  }
+
+  .quiz-field label {
+    display: block;
+    font-size: 1rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.7rem;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .quiz-option {
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .quiz-option:hover { border-color: var(--accent); color: var(--accent); }
+  .quiz-option.selected { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+  .quiz-option.correct { background: var(--accent3); border-color: var(--accent3); color: #000; font-weight: 600; }
+  .quiz-option.wrong { background: var(--accent2); border-color: var(--accent2); color: #000; }
+
+  .check-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    color: #000;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 0.5rem;
+  }
+
+  .check-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .check-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  .result-box {
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-top: 1rem;
+    display: none;
+  }
+
+  .result-box.show { display: block; }
+  .result-box.correct { background: rgba(86, 211, 100, 0.1); border: 1px solid rgba(86, 211, 100, 0.3); color: var(--accent3); }
+  .result-box.wrong { background: rgba(247, 129, 102, 0.1); border: 1px solid rgba(247, 129, 102, 0.3); color: var(--accent2); }
+
+  .next-btn {
+    margin-top: 0.8rem;
+    padding: 0.65rem 1.5rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .next-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+  }
+
+  .score-val { color: var(--accent3); font-weight: 700; font-size: 1.15rem; }
+
+  .quiz-type-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .quiz-type-btn.active {
+    background: var(--accent4);
+    border-color: var(--accent4);
+    color: #fff;
+    font-weight: 700;
+  }
+  .quiz-type-btn:hover:not(.active) { border-color: var(--accent4); color: var(--accent4); }
+
+  /* Mode panels */
+  .mode-panel { display: none; }
+  .mode-panel.active { display: block; }
+
+  /* Airflow animation */
+  @keyframes airflow {
+    0% { stroke-dashoffset: 200; opacity: 0.8; }
+    100% { stroke-dashoffset: 0; opacity: 0.2; }
+  }
+
+  @keyframes plosive-release {
+    0% { transform: scaleX(1); }
+    50% { transform: scaleX(0.95); }
+    100% { transform: scaleX(1); }
+  }
+
+  @keyframes vocal-fold-vibrate {
+    0%, 100% { transform: scaleY(1); }
+    25% { transform: scaleY(0.7); }
+    75% { transform: scaleY(0.7); }
+  }
+
+  @keyframes lung-expand {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  @keyframes bubble-flow {
+    0% { cy: 310; opacity: 0.9; r: 4; }
+    100% { cy: 50; opacity: 0; r: 2; }
+  }
+
+  .airflow-path {
+    stroke-dasharray: 200;
+    animation: airflow 1.2s linear infinite;
+  }
+
+  /* Table mode */
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .phoneme-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  .phoneme-table th, .phoneme-table td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: center;
+  }
+
+  .phoneme-table th {
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.78rem;
+  }
+
+  .phoneme-table td.phoneme-cell {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  .phoneme-table td.phoneme-cell:hover {
+    background: rgba(88, 166, 255, 0.1);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .main { grid-template-columns: 1fr; }
+    .phoneme-panel { border-right: none; border-bottom: 1px solid var(--border); }
+    .learn-layout { grid-template-columns: 1fr; }
+  }
+
+  .step-description {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 0.6rem;
+    text-align: center;
+    min-height: 2.5em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.5rem;">
+    <a href="../index.html" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.8rem;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text-muted);font-size:0.8rem;text-decoration:none;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">← 메인으로</a>
+  </div>
+  <h1>자음과 모음의 특성 학습 사이트</h1>
+  <p>한국어 음운에 대해 체계적으로 반복하며 함께 익혀요!</p>
+</header>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" onclick="setMode('learn')">📖 학습 모드</button>
+  <button class="mode-tab" onclick="setMode('quiz')">✏️ 퀴즈 모드</button>
+  <button class="mode-tab" onclick="setMode('table')">📋 분류표</button>
+</div>
+
+<div class="main">
+  <!-- Phoneme panel (always visible) -->
+  <div class="phoneme-panel">
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.8rem; text-align:center;">학습하고 싶은 음소를 눌러주세요</p>
+    <h3>한국어 자음 19개</h3>
+    <div class="phoneme-group-label">장애음 (무성음)</div>
+    <div class="phoneme-grid" id="phoneme-grid-obstruent"></div>
+    <div class="phoneme-group-label" style="margin-top:0.8rem">공명자음 (유성음)</div>
+    <div class="phoneme-grid" id="phoneme-grid-sonorant"></div>
+
+    <div style="border-top:1px solid var(--border); margin: 1rem 0 0.8rem;"></div>
+    <h3>한국어 단모음 7개</h3>
+    <div class="phoneme-grid" id="vowel-grid-mono"></div>
+
+    <div style="border-top:1px solid var(--border); margin: 1rem 0 0.8rem;"></div>
+    <h3>한국어 이중모음 10개</h3>
+    <div class="phoneme-grid" id="vowel-grid-di"></div>
+  </div>
+
+  <!-- Content area -->
+  <div class="content">
+
+    <!-- LEARN MODE -->
+    <div class="mode-panel active" id="mode-learn">
+      <div class="learn-layout" id="learn-content">
+      </div>
+    </div>
+
+    <!-- QUIZ MODE -->
+    <div class="mode-panel" id="mode-quiz">
+      <div class="quiz-container">
+        <div class="score-bar">
+          <span>점수</span>
+          <span class="score-val" id="score-display">0 / 0</span>
+          <span style="flex:1"></span>
+          <button class="anim-btn" onclick="resetQuiz()">처음부터</button>
+        </div>
+        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+          <button class="quiz-type-btn active" id="qtab-consonant" onclick="setQuizType('consonant')">🔤 자음</button>
+          <button class="quiz-type-btn" id="qtab-mono" onclick="setQuizType('mono')">🔡 단모음</button>
+          <button class="quiz-type-btn" id="qtab-di" onclick="setQuizType('di')">🔡 이중모음</button>
+        </div>
+        <div id="quiz-content"></div>
+      </div>
+    </div>
+
+    <!-- TABLE MODE -->
+    <div class="mode-panel" id="mode-table">
+      <p style="margin-bottom:0.6rem; font-size:0.82rem; color:var(--text-dim);">각 음소를 누르면 해당 설명 화면으로 이동합니다</p>
+      <h3 style="margin-bottom:1rem; font-size:0.9rem; color:var(--text-muted);">자음 분류표</h3>
+      <div class="table-container" id="table-content"></div>
+      <h3 style="margin:1.5rem 0 1rem; font-size:0.9rem; color:var(--text-muted);">단모음 분류표</h3>
+      <div class="table-container" id="table-monophthong"></div>
+      <h3 style="margin:1.5rem 0 1rem; font-size:0.9rem; color:var(--text-muted);">이중모음 분류표</h3>
+      <div class="table-container" id="table-diphthong"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ==================== DATA ====================
+const PHONEMES = [
+  { symbol:'ㅂ', name:'비읍', place:'양순', manner:'파열', voice:'무성', tenseness:'평음',
+    placeEn:'bilabial', mannerEn:'plosive', voiceEn:'voiceless',
+    desc:'폐에서 나온 기류가 성대를 지나 구강으로 올라옵니다. 두 입술이 완전히 닫혀 기류를 막은 후, 갑자기 입술을 열어 기류가 터져 나오며 산출됩니다. 성대는 진동하지 않는 무성음이며, 평음의 특성을 가집니다.' },
+  { symbol:'ㅃ', name:'쌍비읍', place:'양순', manner:'파열', voice:'무성', tenseness:'경음',
+    placeEn:'bilabial', mannerEn:'plosive', voiceEn:'voiceless',
+    desc:'ㅂ와 같이 양순 파열음이지만, 성문을 더 좁혀 강하게 기류를 막았다가 터트리는 경음(된소리)입니다. 두 입술이 긴장된 상태로 닫혔다가 폭발적으로 열립니다.' },
+  { symbol:'ㅍ', name:'피읍', place:'양순', manner:'파열', voice:'무성', tenseness:'격음',
+    placeEn:'bilabial', mannerEn:'plosive', voiceEn:'voiceless',
+    desc:'양순 파열 격음(거센소리)입니다. 입술이 닫혔다가 열릴 때 강한 기류(기식)가 함께 방출됩니다. ㅂ보다 훨씬 강한 기류가 동반됩니다.' },
+  { symbol:'ㄷ', name:'디귿', place:'치조', manner:'파열', voice:'무성', tenseness:'평음',
+    placeEn:'alveolar', mannerEn:'plosive', voiceEn:'voiceless',
+    desc:'혀끝이 윗잇몸(치조)에 붙어 기류를 완전히 차단한 후 갑자기 떨어지면서 기류가 파열됩니다. 성대는 진동하지 않는 무성 치조 파열음입니다.' },
+  { symbol:'ㄸ', name:'쌍디귿', place:'치조', manner:'파열', voice:'무성', tenseness:'경음',
+    placeEn:'alveolar', mannerEn:'plosive', voiceEn:'voiceless',
+    desc:'혀끝을 치조에 긴장하여 강하게 붙였다가 터트리는 치조 파열 경음입니다. 성문을 좁혀 후두 근육에 긴장이 동반됩니다.' },
+  { symbol:'ㅌ', name:'티읕', place:'치조', manner:'파열', voice:'무성', tenseness:'격음',
+    placeEn:'alveolar', mannerEn:'plosive', voiceEn:'voiceless',
+    desc:'혀끝이 치조를 막았다가 열릴 때 강한 기식(기류)이 함께 방출되는 치조 파열 격음입니다.' },
+  { symbol:'ㄱ', name:'기역', place:'연구개', manner:'파열', voice:'무성', tenseness:'평음',
+    placeEn:'velar', mannerEn:'plosive', voiceEn:'voiceless',
+    desc:'혀 뒷부분(후설)이 연구개에 붙어 기류를 막았다가 터트리는 연구개 파열음입니다. 구강의 가장 뒷부분에서 조음됩니다.' },
+  { symbol:'ㄲ', name:'쌍기역', place:'연구개', manner:'파열', voice:'무성', tenseness:'경음',
+    placeEn:'velar', mannerEn:'plosive', voiceEn:'voiceless',
+    desc:'연구개 파열 경음으로, 혀 뒷부분이 연구개에 긴장하여 붙었다가 강하게 터트립니다.' },
+  { symbol:'ㅋ', name:'키읔', place:'연구개', manner:'파열', voice:'무성', tenseness:'격음',
+    placeEn:'velar', mannerEn:'plosive', voiceEn:'voiceless',
+    desc:'혀 뒷부분이 연구개를 막았다가 강한 기식과 함께 열리는 연구개 파열 격음입니다.' },
+  { symbol:'ㅅ', name:'시옷', place:'치조', manner:'마찰', voice:'무성', tenseness:'평음',
+    placeEn:'alveolar', mannerEn:'fricative', voiceEn:'voiceless',
+    desc:'혀끝을 치조 가까이 좁혀 좁은 통로를 만들고 기류를 통과시킵니다. 이때 기류의 마찰로 마찰음 특유의 쉭하는 소리가 납니다. 성대는 진동하지 않습니다.' },
+  { symbol:'ㅆ', name:'쌍시옷', place:'치조', manner:'마찰', voice:'무성', tenseness:'경음',
+    placeEn:'alveolar', mannerEn:'fricative', voiceEn:'voiceless',
+    desc:'치조 마찰 경음으로, 혀끝을 치조에 더욱 긴장시켜 좁은 통로를 만든 후 기류를 마찰시켜 산출합니다.' },
+  { symbol:'ㅎ', name:'히읗', place:'성문', manner:'마찰', voice:'무성', tenseness:'평음',
+    placeEn:'glottal', mannerEn:'fricative', voiceEn:'voiceless',
+    desc:'성대(성문)를 좁혀 기류가 통과하면서 마찰이 일어나는 성문 마찰음입니다. 구강 내 다른 조음 기관의 조임 없이 성대 수준에서만 마찰이 형성됩니다.' },
+  { symbol:'ㅈ', name:'지읒', place:'(치경)경구개', manner:'파찰', voice:'무성', tenseness:'평음',
+    placeEn:'palatal', mannerEn:'affricate', voiceEn:'voiceless',
+    desc:'혀 앞부분이 (치경)경구개에 닿아 기류를 완전히 차단한 후(파열), 서서히 떨어지면서 마찰을 일으키는(마찰) 파찰음입니다. 파열과 마찰이 동시에 나타납니다.' },
+  { symbol:'ㅉ', name:'쌍지읒', place:'(치경)경구개', manner:'파찰', voice:'무성', tenseness:'경음',
+    placeEn:'palatal', mannerEn:'affricate', voiceEn:'voiceless',
+    desc:'(치경)경구개 파찰 경음입니다. 혀 앞부분이 (치경)경구개를 긴장하여 막은 후 마찰과 함께 개방됩니다.' },
+  { symbol:'ㅊ', name:'치읓', place:'(치경)경구개', manner:'파찰', voice:'무성', tenseness:'격음',
+    placeEn:'palatal', mannerEn:'affricate', voiceEn:'voiceless',
+    desc:'(치경)경구개 파찰 격음으로, 강한 기식이 동반되는 파찰음입니다. 혀가 (치경)경구개를 막았다가 강한 기류와 함께 마찰을 일으키며 개방됩니다.' },
+  { symbol:'ㄴ', name:'니은', place:'치조', manner:'비음', voice:'유성', tenseness:'평음',
+    placeEn:'alveolar', mannerEn:'nasal', voiceEn:'voiced',
+    desc:'혀끝이 치조를 막고 구강 기류를 차단하되, 연구개(목젖)를 내려 비강으로 기류가 통과하게 합니다. 성대가 진동하는 유성 비음입니다.' },
+  { symbol:'ㅁ', name:'미음', place:'양순', manner:'비음', voice:'유성', tenseness:'평음',
+    placeEn:'bilabial', mannerEn:'nasal', voiceEn:'voiced',
+    desc:'두 입술이 완전히 닫혀 구강 기류를 막고, 연구개가 내려가 기류가 비강을 통해 나옵니다. 성대가 진동하는 유성 양순 비음입니다.' },
+  { symbol:'ㅇ', name:'이응(종성)', place:'연구개', manner:'비음', voice:'유성', tenseness:'평음',
+    placeEn:'velar', mannerEn:'nasal', voiceEn:'voiced',
+    desc:'혀 뒷부분이 연구개를 막아 구강 기류를 차단하고, 연구개가 낮아져 기류가 비강으로 통과합니다. 유성 연구개 비음으로, 종성 위치에서만 발음됩니다.' },
+  { symbol:'ㄹ', name:'리을', place:'치조', manner:'유음', voice:'유성', tenseness:'평음',
+    placeEn:'alveolar', mannerEn:'liquid', voiceEn:'voiced',
+    desc:'혀끝이 치조를 순간적으로 두드리는 탄음(flap) 또는 혀끝이 치조 뒷면을 접촉하며 혀 양옆으로 기류가 흐르는 설측음(lateral)으로 산출됩니다. 유성 치조 유음입니다.' },
+];
+
+// ==================== SVG SAGITTAL ====================
+
+function buildSagittal(phoneme, animated) {
+  // Colors
+  const c = {
+    skin: '#d4956a', skinDark: '#b57a55', skinLight: '#e8b08a',
+    oral: '#a8d5e2', nasal: '#c3e6f5',
+    tongue: '#e06040', tongueDark: '#c04030',
+    velum: '#d4888a', velumDark: '#b86060',
+    lips: '#e87090', lipsDark: '#c05070',
+    teeth: '#f0efe8', teethShadow: '#d4d3c8',
+    glottis: '#888899', glottisOpen: '#cc6677',
+    airflow: '#00d4cc', airflowGlow: 'rgba(0,212,204,0.4)',
+    lung: '#e06060', lungLight: '#f08080',
+    trachea: '#c8a060',
+    vocal: '#9090bb',
+    nasal_passage: '#b0d4e8',
+    bg: '#f8fafc',
+  };
+
+  const p = phoneme;
+  const isNasal = p.manner === '비음';
+  const isBilabial = p.place === '양순';
+  const isAlveolar = p.place === '치조';
+  const isPalatal = p.place === '(치경)경구개';
+  const isVelar = p.place === '연구개';
+  const isGlottal = p.place === '성문';
+  const isPlosive = p.manner === '파열';
+  const isFricative = p.manner === '마찰';
+  const isAffricate = p.manner === '파찰';
+  const isLiquid = p.manner === '유음';
+  const isVoiced = p.voice === '유성';
+  const isAspirated = p.tenseness === '격음';
+
+  // Tongue body position
+  let tongueX = 195, tongueY = 172;
+  let tongueTipX = 155, tongueTipY = 178;
+  let contactX = 0, contactY = 0;
+  let hasContact = false;
+  let vocalFoldOpen = isGlottal || isFricative ? 40 : 15;
+  
+  if (isVoiced) vocalFoldOpen = 8;
+  if (isGlottal) vocalFoldOpen = 50;
+
+  if (isBilabial) {
+    tongueTipX = 145; tongueTipY = 182; tongueX = 195; tongueY = 175;
+  } else if (isAlveolar) {
+    tongueTipX = 160; tongueTipY = 163;
+    tongueX = 195; tongueY = 172;
+    contactX = 160; contactY = 152;
+    hasContact = true;
+  } else if (isPalatal) {
+    tongueTipX = 165; tongueTipY = 165;
+    tongueX = 190; tongueY = 162;
+    contactX = 175; contactY = 148;
+    hasContact = true;
+  } else if (isVelar) {
+    tongueTipX = 148; tongueTipY = 180;
+    tongueX = 205; tongueY = 162;
+    contactX = 208; contactY = 148;
+    hasContact = true;
+  }
+
+  // Nasal passage open?
+  const velumDown = isNasal;
+  const velumPath = velumDown
+    ? 'M 220 148 C 235 155 240 165 238 178' // lowered
+    : 'M 220 148 C 235 145 242 148 245 155'; // raised
+
+  // Airflow animation paths
+  let airPaths = '';
+  if (animated) {
+    if (isNasal) {
+      // Airflow through nasal
+      airPaths = `
+        <path class="airflow-path" d="M 248 320 L 248 270 L 248 240 L 248 210 C 248 195 245 188 238 182 C 232 177 226 172 220 168 C 215 165 210 162 205 160 C 200 158 195 157 190 157" 
+          fill="none" stroke="${c.airflow}" stroke-width="3" opacity="0.7" stroke-linecap="round"/>
+        <path class="airflow-path" d="M 248 310 L 248 270 L 248 235 C 248 200 246 190 240 182 C 234 174 226 170 218 165 C 210 160 204 157 198 155 C 192 153 186 152 180 153"
+          fill="none" stroke="${c.airflow}" stroke-width="2" opacity="0.5" stroke-linecap="round" style="animation-delay:0.3s"/>
+      `;
+    } else {
+      // Airflow through oral
+      const exitX = isBilabial ? 110 : (isAlveolar || isPalatal ? 125 : 140);
+      airPaths = `
+        <path class="airflow-path" d="M 248 320 L 248 270 L 248 230 L 248 210 L 248 200 C 248 190 245 183 238 178 C 232 173 226 170 218 168 C 210 166 200 165 190 164 C 180 163 170 163 162 165 C 150 168 142 174 135 180 L ${exitX+10} 184 L ${exitX} 185"
+          fill="none" stroke="${c.airflow}" stroke-width="3" opacity="0.8" stroke-linecap="round"/>
+      `;
+      if (isFricative || isAffricate) {
+        // Turbulence lines
+        airPaths += `
+          <line x1="${exitX+20}" y1="180" x2="${exitX-10}" y2="175" stroke="${c.airflow}" stroke-width="1.5" opacity="0.6" style="animation: airflow 0.8s linear infinite; stroke-dasharray:30; stroke-dashoffset:30;"/>
+          <line x1="${exitX+18}" y1="188" x2="${exitX-8}" y2="193" stroke="${c.airflow}" stroke-width="1.5" opacity="0.6" style="animation: airflow 0.8s linear infinite 0.2s; stroke-dasharray:30; stroke-dashoffset:30;"/>
+        `;
+      }
+    }
+
+    // Lung expansion
+    airPaths += `<ellipse cx="248" cy="330" rx="22" ry="18" fill="${c.lung}" opacity="0.5" style="animation: lung-expand 1.2s ease-in-out infinite;"/>`;
+  }
+
+  // Lip closure for bilabial
+  const lipGap = (isBilabial && animated) ? 0 : 5;
+  const upperLipY = 186 - lipGap/2;
+  const lowerLipY = 190 + lipGap/2;
+
+  // Tongue contact fill
+  const contactFill = (hasContact && (isPlosive || isAffricate)) ? c.accent : 'transparent';
+
+  // Vocal fold animation style
+  const vfStyle = (isVoiced && animated) ? `style="animation: vocal-fold-vibrate 0.15s ease-in-out infinite;"` : '';
+
+  return `
+<svg id="sagittal-svg" viewBox="0 0 380 400" xmlns="http://www.w3.org/2000/svg" style="background:${c.bg}; border-radius:8px;">
+  <defs>
+    <radialGradient id="lungGrad" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="${c.lungLight}"/>
+      <stop offset="100%" stop-color="${c.lung}"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="skinGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="${c.skin}"/>
+      <stop offset="100%" stop-color="${c.skinLight}"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background label -->
+  <text x="10" y="20" font-size="10" fill="#94a3b8" font-family="sans-serif">시상단면 (측면도)</text>
+
+  <!-- ===== SKULL / HEAD OUTLINE ===== -->
+  <!-- Head profile -->
+  <path d="M 295 30 C 340 30 370 70 370 120 C 370 165 350 195 320 210 C 310 215 300 218 290 220 C 280 222 270 225 265 232 C 260 238 258 248 258 258 C 258 270 260 280 265 285 C 270 290 278 290 285 292 C 292 294 300 296 305 302 C 310 308 310 318 308 325"
+    fill="${c.skinDark}" opacity="0.3"/>
+  <path d="M 290 30 C 335 30 365 72 365 120 C 365 163 345 193 315 208 C 305 213 295 216 285 218 C 275 220 265 223 260 230 C 255 236 253 246 253 256 C 253 268 255 278 260 283 C 265 288 273 288 280 290"
+    fill="url(#skinGrad)" stroke="${c.skinDark}" stroke-width="2"/>
+
+  <!-- Forehead / top -->
+  <path d="M 180 28 C 200 15 250 10 290 30 C 310 40 330 60 340 85"
+    fill="none" stroke="${c.skinDark}" stroke-width="2"/>
+
+  <!-- ===== NASAL CAVITY ===== -->
+  <path d="M 165 95 C 175 88 195 85 215 88 C 230 90 240 95 248 105 C 252 110 253 118 252 125 L 252 145 C 252 150 250 153 246 154 C 242 155 238 153 235 150 L 235 130 C 235 120 232 112 225 108 C 218 104 208 103 200 106 C 192 109 186 116 183 124 L 183 145 C 183 150 181 153 178 154 C 174 155 170 152 168 148 L 168 128 C 168 115 166 105 165 98 Z"
+    fill="${c.nasal}" opacity="0.5" stroke="${c.skinDark}" stroke-width="1.2"/>
+  <text x="198" y="120" font-size="9" fill="${c.nasal_passage}" font-family="sans-serif" opacity="0.8">비강</text>
+
+  <!-- Nose tip -->
+  <path d="M 155 110 C 150 105 148 98 152 93 C 157 87 165 87 168 92 C 170 96 169 103 165 108"
+    fill="${c.skin}" stroke="${c.skinDark}" stroke-width="1.5"/>
+
+  <!-- ===== ORAL CAVITY ===== -->
+  <path d="M 110 163 C 120 155 140 148 162 147 C 180 147 200 149 215 152 C 225 154 232 157 238 162 C 243 166 246 170 248 175 L 248 200 C 248 208 245 214 240 218 C 234 222 226 224 218 225 L 170 225 C 158 225 148 222 140 216 C 133 210 128 202 125 193 L 115 183 Z"
+    fill="${c.oral}" opacity="0.35" stroke="${c.skinDark}" stroke-width="1"/>
+
+  <!-- ===== HARD PALATE ===== -->
+  <path d="M 162 147 C 175 143 195 141 215 143 C 225 144 232 147 238 152"
+    fill="none" stroke="${c.teeth}" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 162 147 C 175 143 195 141 215 143 C 225 144 232 147 238 152"
+    fill="none" stroke="${c.skinDark}" stroke-width="1.2"/>
+  <text x="188" y="142" font-size="8" fill="${c.teeth}" font-family="sans-serif" opacity="0.8">(치경)경구개</text>
+
+  <!-- ===== VELUM (soft palate) ===== -->
+  <path d="${velumPath}" fill="${c.velum}" stroke="${c.velumDark}" stroke-width="1.5" opacity="0.85"/>
+  <text x="228" y="${velumDown ? 162 : 145}" font-size="8" fill="${c.velum}" font-family="sans-serif" opacity="0.8">연구개</text>
+
+  <!-- ===== TEETH ===== -->
+  <!-- Upper teeth -->
+  <rect x="138" y="150" width="24" height="9" rx="2" fill="${c.teeth}" stroke="${c.teethShadow}" stroke-width="0.8"/>
+  <!-- Lower teeth -->
+  <rect x="132" y="195" width="24" height="9" rx="2" fill="${c.teeth}" stroke="${c.teethShadow}" stroke-width="0.8"/>
+
+  <!-- ===== LIPS ===== -->
+  <!-- Upper lip -->
+  <path d="M 105 ${upperLipY} C 115 ${upperLipY-5} 130 ${upperLipY-3} 140 ${upperLipY} C 148 ${upperLipY+2} 152 ${upperLipY+4} 150 ${upperLipY+5}"
+    fill="${c.lips}" stroke="${c.lipsDark}" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Lower lip -->
+  <path d="M 105 ${lowerLipY+2} C 115 ${lowerLipY+7} 130 ${lowerLipY+8} 140 ${lowerLipY+5} C 148 ${lowerLipY+3} 152 ${lowerLipY+1} 150 ${lowerLipY}"
+    fill="${c.lips}" stroke="${c.lipsDark}" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- ===== TONGUE ===== -->
+  <ellipse cx="${tongueX}" cy="${tongueY + 10}" rx="55" ry="20" fill="${c.tongueDark}" opacity="0.7"/>
+  <path d="M ${tongueTipX} ${tongueTipY} C ${tongueTipX+20} ${tongueTipY-12} ${tongueX-10} ${tongueY-8} ${tongueX+20} ${tongueY-5} C ${tongueX+45} ${tongueY+2} ${tongueX+50} ${tongueY+18} ${tongueX+40} ${tongueY+25} C ${tongueX+25} ${tongueY+30} ${tongueX-10} ${tongueY+28} ${tongueX-30} ${tongueY+20} C ${tongueX-45} ${tongueY+12} ${tongueX-40} ${tongueY-2} ${tongueTipX} ${tongueTipY} Z"
+    fill="${c.tongue}" stroke="${c.tongueDark}" stroke-width="1.5"/>
+  <text x="${tongueX - 8}" y="${tongueY + 22}" font-size="9" fill="rgba(255,255,255,0.6)" font-family="sans-serif">혀</text>
+
+  <!-- Contact highlight -->
+  ${hasContact ? `<circle cx="${contactX}" cy="${contactY}" r="7" fill="${c.airflow}" opacity="${isPlosive || isAffricate ? 0.7 : 0.4}" filter="url(#glow)" style="${animated ? 'animation: lung-expand 0.6s ease-in-out infinite;' : ''}"/>` : ''}
+
+  <!-- ===== PHARYNX & THROAT ===== -->
+  <path d="M 248 230 C 255 235 260 242 262 252 L 262 280 C 262 288 258 292 252 294 L 244 295 C 240 296 237 294 236 290 L 236 265 C 236 256 238 248 242 242 C 244 238 246 234 248 230 Z"
+    fill="${c.skinDark}" opacity="0.5" stroke="${c.skinDark}" stroke-width="1"/>
+
+  <!-- ===== LARYNX / VOCAL FOLDS ===== -->
+  <!-- Trachea -->
+  <rect x="236" y="292" width="24" height="60" rx="4" fill="${c.trachea}" opacity="0.5" stroke="${c.skinDark}" stroke-width="1"/>
+  <text x="225" y="340" font-size="8" fill="${c.trachea}" font-family="sans-serif" opacity="0.8">기관</text>
+
+  <!-- Vocal fold area -->
+  <rect x="232" y="278" width="32" height="18" rx="3" fill="${c.glottis}" opacity="0.5"/>
+  <!-- Vocal folds -->
+  <rect x="233" y="282" width="${vocalFoldOpen/2 + 5}" height="10" rx="2" fill="${c.vocal}" ${vfStyle}/>
+  <rect x="${233 + 32 - vocalFoldOpen/2 - 5}" y="282" width="${vocalFoldOpen/2 + 5}" height="10" rx="2" fill="${c.vocal}" ${vfStyle}/>
+  <text x="215" y="293" font-size="8" fill="${c.vocal}" font-family="sans-serif" opacity="0.8">성대</text>
+
+  <!-- ===== LUNGS ===== -->
+  <ellipse cx="238" cy="355" rx="18" ry="22" fill="url(#lungGrad)" opacity="0.6" stroke="${c.lung}" stroke-width="1.5"/>
+  <ellipse cx="260" cy="358" rx="14" ry="18" fill="url(#lungGrad)" opacity="0.5" stroke="${c.lung}" stroke-width="1.5"/>
+  <text x="220" y="382" font-size="9" fill="${c.lung}" font-family="sans-serif" opacity="0.8">폐</text>
+
+  <!-- ===== AIRFLOW ANIMATIONS ===== -->
+  ${airPaths}
+
+  <!-- ===== ARROWS & LABELS ===== -->
+  <!-- Bilabial label -->
+  ${isBilabial ? `<line x1="105" y1="188" x2="78" y2="188" stroke="${c.airflow}" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="10" y="191" font-size="9" fill="${c.airflow}" font-family="sans-serif">양순</text>` : ''}
+  ${isAlveolar ? `<line x1="162" y1="152" x2="148" y2="138" stroke="${c.airflow}" stroke-width="1.5"/>
+    <text x="110" y="135" font-size="9" fill="${c.airflow}" font-family="sans-serif">치조</text>` : ''}
+  ${isPalatal ? `<line x1="178" y1="148" x2="166" y2="134" stroke="${c.airflow}" stroke-width="1.5"/>
+    <text x="168" y="128" font-size="9" fill="${c.airflow}" font-family="sans-serif">(치경)경구개</text>` : ''}
+  ${isVelar ? `<line x1="220" y1="148" x2="220" y2="132" stroke="${c.airflow}" stroke-width="1.5"/>
+    <text x="200" y="128" font-size="9" fill="${c.airflow}" font-family="sans-serif">연구개</text>` : ''}
+  ${isGlottal ? `<line x1="248" y1="287" x2="280" y2="287" stroke="${c.airflow}" stroke-width="1.5"/>
+    <text x="282" y="291" font-size="9" fill="${c.airflow}" font-family="sans-serif">성문</text>` : ''}
+
+  <!-- Nasal arrow when nasal -->
+  ${isNasal ? `<path d="M 170 90 L 155 70 L 145 60" fill="none" stroke="${c.airflow}" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="100" y="58" font-size="9" fill="${c.airflow}" font-family="sans-serif">비강 기류</text>` : ''}
+
+  <!-- Voiced indicator -->
+  ${isVoiced ? `<circle cx="248" cy="287" r="5" fill="${c.accent3}" opacity="0.9" filter="url(#glow)" style="${animated ? 'animation:lung-expand 0.15s ease-in-out infinite;' : ''}"/>
+    <text x="256" y="291" font-size="8" fill="${c.accent3}" font-family="sans-serif">진동</text>` : ''}
+
+  <!-- Aspiration marker -->
+  ${isAspirated ? `<text x="88" y="178" font-size="9" fill="#fdcb6e" font-family="sans-serif">기식 →</text>` : ''}
+
+  <!-- Step label -->
+  <rect x="8" y="368" width="200" height="24" rx="4" fill="rgba(0,0,0,0.5)"/>
+  <text id="step-label" x="14" y="383" font-size="9" fill="var(--text-muted, #555)" font-family="sans-serif">${p.symbol} / ${p.place} ${p.manner}${p.tenseness !== '평음' ? ' '+p.tenseness : ''}</text>
+</svg>`;
+}
+
+// ==================== HELPERS ====================
+function mannerLabel(manner) {
+  return (manner === '비음' || manner === '유음') ? manner : manner + '음';
+}
+
+function getPhonemeLabel(p) {
+  const noTenseness = p.manner === '비음' || p.manner === '유음' || p.symbol === 'ㅎ';
+  if (noTenseness) {
+    return `${p.place} ${mannerLabel(p.manner)}`;
+  }
+  return `${p.place} ${mannerLabel(p.manner)} ${p.tenseness}`;
+}
+
+// ==================== VOWEL DATA ====================
+const MONOPHTHONGS = [
+  { symbol:'ㅣ', ipa:'i',  height:'고모음', front:'전설모음', lip:'평순모음', type:'mono' },
+  { symbol:'ㅔ/ㅐ', ipa:'ɛ', height:'중모음', front:'전설모음', lip:'평순모음', type:'mono' },
+  { symbol:'ㅡ', ipa:'ɯ',  height:'고모음', front:'후설모음', lip:'평순모음', type:'mono' },
+  { symbol:'ㅓ', ipa:'ʌ',  height:'중모음', front:'후설모음', lip:'평순모음', type:'mono' },
+  { symbol:'ㅏ', ipa:'ɑ',  height:'저모음', front:'후설모음', lip:'평순모음', type:'mono' },
+  { symbol:'ㅜ', ipa:'u',  height:'고모음', front:'후설모음', lip:'원순모음', type:'mono' },
+  { symbol:'ㅗ', ipa:'o',  height:'중모음', front:'후설모음', lip:'원순모음', type:'mono' },
+];
+
+const DIPHTHONGS = [
+  { symbol:'ㅖ/ㅒ', ipa:'jɛ', glide:'j계열', base:'ㅔ/ㅐ', type:'di' },
+  { symbol:'ㅑ',    ipa:'jɑ', glide:'j계열', base:'ㅏ',    type:'di' },
+  { symbol:'ㅠ',    ipa:'ju', glide:'j계열', base:'ㅜ',    type:'di' },
+  { symbol:'ㅕ',    ipa:'jʌ', glide:'j계열', base:'ㅓ',    type:'di' },
+  { symbol:'ㅛ',    ipa:'jo', glide:'j계열', base:'ㅗ',    type:'di' },
+  { symbol:'ㅟ',    ipa:'wi', glide:'w계열', base:'ㅣ',    type:'di' },
+  { symbol:'ㅚ/ㅞ/ㅙ', ipa:'wɛ', glide:'w계열', base:'ㅔ/ㅐ', type:'di' },
+  { symbol:'ㅘ',    ipa:'wɑ', glide:'w계열', base:'ㅏ',    type:'di' },
+  { symbol:'ㅝ',    ipa:'wʌ', glide:'w계열', base:'ㅓ',    type:'di' },
+  { symbol:'ㅢ',    ipa:'ɰi', glide:'ɰ계열', base:'ㅣ',    type:'di' },
+];
+
+function getVowelLabel(v) {
+  if (v.type === 'mono') return `${v.height} · ${v.front} · ${v.lip}`;
+  return `${v.glide} + ${v.base} → ${v.ipa}`;
+}
+
+// IPA 표기 (윗첨자 포함 HTML)
+const CONSONANT_IPA = {
+  'ㅂ': 'p',
+  'ㅃ': 'p<sup>*</sup>',
+  'ㅍ': 'p<sup>h</sup>',
+  'ㄷ': 't',
+  'ㄸ': 't<sup>*</sup>',
+  'ㅌ': 't<sup>h</sup>',
+  'ㄱ': 'k',
+  'ㄲ': 'k<sup>*</sup>',
+  'ㅋ': 'k<sup>h</sup>',
+  'ㅈ': 'ʨ',
+  'ㅉ': 'ʨ<sup>*</sup>',
+  'ㅊ': 'ʨ<sup>h</sup>',
+  'ㅅ': 's',
+  'ㅆ': 's<sup>*</sup>',
+  'ㅎ': 'h',
+  'ㅁ': 'm',
+  'ㄴ': 'n',
+  'ㄹ': 'ɾ/l',
+  'ㅇ': 'ŋ',
+};
+
+// ==================== RENDER PHONEME LIST ====================
+const OBSTRUENTS = ['ㅂ','ㅃ','ㅍ','ㄷ','ㄸ','ㅌ','ㄱ','ㄲ','ㅋ','ㅅ','ㅆ','ㅎ','ㅈ','ㅉ','ㅊ'];
+const SONORANTS  = ['ㅁ','ㄴ','ㅇ','ㄹ'];
+
+function renderPhonemeList() {
+  // 자음 — IPA 표시
+  const obGrid = document.getElementById('phoneme-grid-obstruent');
+  const soGrid = document.getElementById('phoneme-grid-sonorant');
+  obGrid.innerHTML = PHONEMES
+    .filter(p => OBSTRUENTS.includes(p.symbol))
+    .sort((a, b) => OBSTRUENTS.indexOf(a.symbol) - OBSTRUENTS.indexOf(b.symbol))
+    .map(p => {
+      const i = PHONEMES.indexOf(p);
+      const ipa = CONSONANT_IPA[p.symbol] || p.symbol;
+      return `<button class="phoneme-btn ipa-btn" onclick="selectPhoneme(${i})" id="pbtn-${i}">${ipa}</button>`;
+    }).join('');
+  soGrid.innerHTML = PHONEMES
+    .filter(p => SONORANTS.includes(p.symbol))
+    .sort((a, b) => SONORANTS.indexOf(a.symbol) - SONORANTS.indexOf(b.symbol))
+    .map(p => {
+      const i = PHONEMES.indexOf(p);
+      const ipa = CONSONANT_IPA[p.symbol] || p.symbol;
+      return `<button class="phoneme-btn ipa-btn" onclick="selectPhoneme(${i})" id="pbtn-${i}">${ipa}</button>`;
+    }).join('');
+  // 단모음 — IPA 표시, 5열
+  const monoGrid = document.getElementById('vowel-grid-mono');
+  monoGrid.innerHTML = MONOPHTHONGS.map((v, i) =>
+    `<button class="phoneme-btn ipa-btn" onclick="selectVowel('mono',${i})" id="vbtn-mono-${i}">${v.ipa}</button>`
+  ).join('');
+  // 이중모음 — IPA 표시, 5열
+  const diGrid = document.getElementById('vowel-grid-di');
+  diGrid.innerHTML = DIPHTHONGS.map((v, i) =>
+    `<button class="phoneme-btn ipa-btn" onclick="selectVowel('di',${i})" id="vbtn-di-${i}">${v.ipa}</button>`
+  ).join('');
+}
+
+// 시각적으로 작아 보이는 IPA 문자를 span으로 감싸 크기 보정
+function boostIPA(ipa) {
+  return ipa.replace(/[ʌɯɛɰ]/g, ch => `<span class="ipa-boost">${ch}</span>`);
+}
+
+// ==================== SELECT PHONEME ====================
+let currentIdx = -1;
+let animInterval = null;
+let animPlaying = false;
+
+function scrollToContent() {
+  // 모바일에서 콘텐츠 영역으로 스크롤
+  const target = document.getElementById('learn-content');
+  if (target) {
+    setTimeout(() => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+}
+
+function selectPhoneme(idx) {
+  currentIdx = idx;
+  document.querySelectorAll('.phoneme-btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.getElementById(`pbtn-${idx}`);
+  if (activeBtn) activeBtn.classList.add('active');
+  const p = PHONEMES[idx];
+
+  if (document.getElementById('mode-learn').classList.contains('active')) {
+    renderLearnMode(p);
+    scrollToContent();
+  }
+}
+
+function selectVowel(vtype, idx) {
+  document.querySelectorAll('.phoneme-btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.getElementById(`vbtn-${vtype}-${idx}`);
+  if (activeBtn) activeBtn.classList.add('active');
+  const v = vtype === 'mono' ? MONOPHTHONGS[idx] : DIPHTHONGS[idx];
+  if (document.getElementById('mode-learn').classList.contains('active')) {
+    renderVowelLearnMode(v);
+    scrollToContent();
+  }
+}
+
+function renderVowelLearnMode(v) {
+  let rows = '';
+  if (v.type === 'mono') {
+    rows = `
+      <tr><td>혀의 고저</td><td><span class="badge badge-place">${v.height}</span></td></tr>
+      <tr><td>혀의 전후</td><td><span class="badge badge-manner">${v.front}</span></td></tr>
+      <tr><td>입술 모양</td><td><span class="badge badge-voice">${v.lip}</span></td></tr>
+    `;
+  } else {
+    rows = `
+      <tr><td>활음 계열</td><td><span class="badge badge-place">${v.glide}</span></td></tr>
+      <tr><td>기반 단모음</td><td><span class="badge badge-manner">${v.base}</span></td></tr>
+    `;
+  }
+  document.getElementById('learn-content').innerHTML = `
+    <div class="phoneme-hero${v.symbol.length > 2 ? ' compact' : ''}">
+      <div class="phoneme-display${v.symbol.length > 2 ? ' long' : ''}">${v.symbol}</div>
+      <div style="margin-bottom:1.5rem"></div>
+      <table class="props-table">${rows}</table>
+    </div>
+  `;
+}
+
+function renderLearnMode(p) {
+  document.getElementById('learn-content').innerHTML = `
+    <div class="phoneme-hero${p.symbol.length > 2 ? ' compact' : ''}">
+      <div class="phoneme-display${p.symbol.length > 2 ? ' long' : ''}">${p.symbol}</div>
+      <div class="phoneme-name">${getPhonemeLabel(p)}</div>
+      <table class="props-table">
+        <tr>
+          <td>조음 위치</td>
+          <td><span class="badge badge-place">${p.place}음</span></td>
+        </tr>
+        <tr>
+          <td>조음 방법</td>
+          <td><span class="badge badge-manner">${mannerLabel(p.manner)}</span></td>
+        </tr>
+        ${(p.manner !== '비음' && p.manner !== '유음' && p.symbol !== 'ㅎ') ? `
+        <tr>
+          <td>발성 유형</td>
+          <td><span class="badge badge-voice">${p.tenseness}</span></td>
+        </tr>` : ''}
+      </table>
+    </div>
+  `;
+}
+
+function formatDesc(p) {
+  const d = p.desc;
+  return d
+    .replace(new RegExp(`${p.place}`, 'g'), `<span class="highlight-place">${p.place}</span>`)
+    .replace(new RegExp(`${p.manner}`, 'g'), `<span class="highlight-manner">${p.manner}</span>`)
+    .replace(new RegExp(`${p.voice}`, 'g'), `<span class="highlight-voice">${p.voice}</span>`)
+    .replace(/비강/g, `<span class="highlight-place">비강</span>`)
+    .replace(/연구개/g, `<span class="highlight-place">연구개</span>`);
+}
+
+const stepDescs = {
+  '파열': ['폐에서 기류 발동 →', '기류가 성도를 상승 →', '조음 기관이 완전히 폐쇄됨', '폐쇄 유지 →', '조음 기관 개방 — 기류 파열!'],
+  '마찰': ['폐에서 기류 발동 →', '기류가 성도를 상승 →', '조음 기관이 좁아짐 →', '기류가 좁은 통로 통과 →', '마찰 소음 산출'],
+  '파찰': ['폐에서 기류 발동 →', '기류 상승 →', '완전 폐쇄 →', '서서히 개방 →', '파찰 산출!'],
+  '비음': ['폐에서 기류 발동 →', '연구개 하강 →', '구강 폐쇄 →', '기류가 비강으로 →', '비음 산출'],
+  '유음': ['폐에서 기류 발동 →', '기류 상승 →', '혀끝이 치조 접촉 →', '혀 옆으로 기류 통과 →', '유음 산출'],
+};
+
+let stepIdx = 0;
+let stepTimer = null;
+
+function startStepDesc(p) {
+  clearInterval(stepTimer);
+  stepIdx = 0;
+  const steps = stepDescs[p.manner] || ['기류가 폐에서 발동됩니다.'];
+  const el = document.getElementById('anim-step-desc');
+  if (!el) return;
+  el.textContent = steps[0];
+  stepTimer = setInterval(() => {
+    stepIdx = (stepIdx + 1) % steps.length;
+    if (el) el.textContent = steps[stepIdx];
+  }, 1400);
+}
+
+function renderSVG(anim) {
+  if (currentIdx < 0) return;
+  const container = document.getElementById('svg-container');
+  if (!container) return;
+  container.innerHTML = buildSagittal(PHONEMES[currentIdx], anim);
+  animPlaying = anim;
+  const btn = document.getElementById('anim-toggle');
+  if (btn) {
+    btn.textContent = anim ? '⏸ 애니메이션 정지' : '▶ 애니메이션 재생';
+    btn.classList.toggle('playing', anim);
+  }
+}
+
+function toggleAnim() {
+  animPlaying = !animPlaying;
+  renderSVG(animPlaying);
+}
+
+// ==================== QUIZ ====================
+const quizOptions = {
+  place: ['양순', '치조', '(치경)경구개', '연구개', '성문'],
+  manner: ['파열', '마찰', '파찰', '비음', '유음'],
+  tenseness: ['평음', '경음', '격음'],
+  height: ['고모음', '중모음', '저모음'],
+  front: ['전설모음', '후설모음'],
+  lip: ['평순모음', '원순모음'],
+  glide: ['j계열', 'w계열', 'ɰ계열'],
+};
+
+const hasVoiceType = (p) => p.manner !== '비음' && p.manner !== '유음' && p.symbol !== 'ㅎ';
+
+const QUIZ_TOTAL = 15;
+let currentQuizType = 'consonant'; // 'consonant' | 'mono' | 'di'
+
+function setQuizType(type) {
+  currentQuizType = type;
+  document.getElementById('qtab-consonant').classList.toggle('active', type === 'consonant');
+  document.getElementById('qtab-mono').classList.toggle('active', type === 'mono');
+  document.getElementById('qtab-di').classList.toggle('active', type === 'di');
+  resetQuiz();
+}
+
+function makeQuizQueue() {
+  let pool;
+  if (currentQuizType === 'consonant') {
+    pool = PHONEMES.map((_, i) => ({ kind:'c', idx:i }));
+  } else if (currentQuizType === 'mono') {
+    pool = MONOPHTHONGS.map((_, i) => ({ kind:'mono', idx:i }));
+  } else {
+    pool = DIPHTHONGS.map((_, i) => ({ kind:'di', idx:i }));
+  }
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, QUIZ_TOTAL);
+}
+
+let quizState = { correct: 0, total: 0, currentItem: null, answered: false, queue: [], queuePos: 0 };
+
+function resetQuiz() {
+  quizState = { correct: 0, total: 0, currentItem: null, answered: false, queue: makeQuizQueue(), queuePos: 0 };
+  quizSelections = { place: null, manner: null, tenseness: null, height: null, front: null, lip: null, glide: null, base: null };
+  updateScore();
+  renderQuiz();
+}
+
+function updateScore() {
+  const pos = Math.min(quizState.queuePos, QUIZ_TOTAL);
+  document.getElementById('score-display').textContent = `${quizState.correct} / ${pos}  (${pos}/${QUIZ_TOTAL})`;
+}
+
+function renderQuiz() {
+  if (quizState.queuePos >= QUIZ_TOTAL) {
+    const quizLabel = currentQuizType === 'consonant' ? '자음퀴즈' : currentQuizType === 'mono' ? '단모음퀴즈' : '이중모음퀴즈';
+    sendScore(quizLabel, quizState.correct, QUIZ_TOTAL);
+    document.getElementById('quiz-content').innerHTML = `
+      <div class="quiz-phoneme-display" style="padding:2.5rem">
+        <div style="font-size:3rem;margin-bottom:1rem">🎉</div>
+        <div style="font-size:1.4rem;font-weight:700;color:var(--accent);margin-bottom:0.5rem">${quizState.correct} / ${QUIZ_TOTAL} 정답</div>
+        <div style="font-size:1rem;color:var(--text-muted);margin-bottom:1.5rem">
+          정답률 ${Math.round(quizState.correct/QUIZ_TOTAL*100)}%
+          ${quizState.correct === QUIZ_TOTAL ? ' — 완벽합니다! 🏆' : quizState.correct >= 12 ? ' — 훌륭해요! 👍' : ' — 다시 도전해보세요!'}
+        </div>
+        <button class="check-btn" onclick="resetQuiz()">다시 풀기</button>
+      </div>`;
+    return;
+  }
+
+  const item = quizState.queue[quizState.queuePos];
+  quizState.currentItem = item;
+  quizState.answered = false;
+  const qNum = quizState.queuePos + 1;
+
+  if (item.kind === 'c') {
+    // 자음 퀴즈
+    const p = PHONEMES[item.idx];
+    const needsTenseness = hasVoiceType(p);
+    document.getElementById('quiz-content').innerHTML = `
+      <div class="quiz-phoneme-display">
+        <div style="font-size:0.82rem;color:var(--text-dim);margin-bottom:0.5rem">문제 ${qNum} / ${QUIZ_TOTAL}</div>
+        <div class="phoneme-display">${p.symbol}</div>
+      </div>
+      <p style="text-align:center;color:var(--text-muted);font-size:1rem;margin:-0.5rem 0 1.2rem;">이 자음의 특성을 선택하세요</p>
+      <div class="quiz-form">
+        <div class="quiz-field">
+          <label>📍 조음 위치</label>
+          <div class="quiz-options" id="q-place">
+            ${quizOptions.place.map(o => `<button class="quiz-option" data-val="${o}" onclick="selectOption(this,'place')">${o}음</button>`).join('')}
+          </div>
+        </div>
+        <div class="quiz-field">
+          <label>🔧 조음 방법</label>
+          <div class="quiz-options" id="q-manner">
+            ${quizOptions.manner.map(o => `<button class="quiz-option" data-val="${o}" onclick="selectOption(this,'manner')">${mannerLabel(o)}</button>`).join('')}
+          </div>
+        </div>
+        ${needsTenseness ? `
+        <div class="quiz-field">
+          <label>🎵 발성 유형</label>
+          <div class="quiz-options" id="q-tenseness">
+            ${quizOptions.tenseness.map(o => `<button class="quiz-option" data-val="${o}" onclick="selectOption(this,'tenseness')">${o}</button>`).join('')}
+          </div>
+        </div>` : `<div id="q-tenseness-placeholder"></div>`}
+        <button class="check-btn" onclick="checkAnswer()" disabled id="check-btn">정답 확인</button>
+        <div class="result-box" id="result-box"></div>
+      </div>`;
+
+  } else if (item.kind === 'mono') {
+    // 단모음 퀴즈
+    const v = MONOPHTHONGS[item.idx];
+    document.getElementById('quiz-content').innerHTML = `
+      <div class="quiz-phoneme-display">
+        <div style="font-size:0.82rem;color:var(--text-dim);margin-bottom:0.5rem">문제 ${qNum} / ${QUIZ_TOTAL}</div>
+        <div class="phoneme-display">${v.symbol}</div>
+      </div>
+      <p style="text-align:center;color:var(--text-muted);font-size:1rem;margin:-0.5rem 0 1.2rem;">이 단모음의 특성을 선택하세요</p>
+      <div class="quiz-form">
+        <div class="quiz-field">
+          <label>📐 혀의 고저</label>
+          <div class="quiz-options" id="q-height">
+            ${quizOptions.height.map(o => `<button class="quiz-option" data-val="${o}" onclick="selectOption(this,'height')">${o}</button>`).join('')}
+          </div>
+        </div>
+        <div class="quiz-field">
+          <label>↔️ 혀의 전후</label>
+          <div class="quiz-options" id="q-front">
+            ${quizOptions.front.map(o => `<button class="quiz-option" data-val="${o}" onclick="selectOption(this,'front')">${o}</button>`).join('')}
+          </div>
+        </div>
+        <div class="quiz-field">
+          <label>👄 입술 모양</label>
+          <div class="quiz-options" id="q-lip">
+            ${quizOptions.lip.map(o => `<button class="quiz-option" data-val="${o}" onclick="selectOption(this,'lip')">${o}</button>`).join('')}
+          </div>
+        </div>
+        <button class="check-btn" onclick="checkAnswer()" disabled id="check-btn">정답 확인</button>
+        <div class="result-box" id="result-box"></div>
+      </div>`;
+
+  } else {
+    // 이중모음 퀴즈
+    const v = DIPHTHONGS[item.idx];
+    const baseOpts = [...new Set(DIPHTHONGS.map(d => d.base))];
+    document.getElementById('quiz-content').innerHTML = `
+      <div class="quiz-phoneme-display">
+        <div style="font-size:0.82rem;color:var(--text-dim);margin-bottom:0.5rem">문제 ${qNum} / ${QUIZ_TOTAL}</div>
+        <div class="phoneme-display">${v.symbol}</div>
+      </div>
+      <p style="text-align:center;color:var(--text-muted);font-size:1rem;margin:-0.5rem 0 1.2rem;">이 이중모음의 특성을 선택하세요</p>
+      <div class="quiz-form">
+        <div class="quiz-field">
+          <label>🎵 활음 계열</label>
+          <div class="quiz-options" id="q-glide">
+            ${quizOptions.glide.map(o => `<button class="quiz-option" data-val="${o}" onclick="selectOption(this,'glide')">${o}</button>`).join('')}
+          </div>
+        </div>
+        <div class="quiz-field">
+          <label>🔤 기반 단모음</label>
+          <div class="quiz-options" id="q-base">
+            ${baseOpts.map(o => `<button class="quiz-option" data-val="${o}" onclick="selectOption(this,'base')">${o}</button>`).join('')}
+          </div>
+        </div>
+        <button class="check-btn" onclick="checkAnswer()" disabled id="check-btn">정답 확인</button>
+        <div class="result-box" id="result-box"></div>
+      </div>`;
+  }
+}
+
+let quizSelections = { place:null, manner:null, tenseness:null, height:null, front:null, lip:null, glide:null, base:null };
+
+function selectOption(btn, category) {
+  if (quizState.answered) return;
+  const group = btn.parentElement;
+  group.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  quizSelections[category] = btn.dataset.val;
+
+  const item = quizState.currentItem;
+  let allSelected = false;
+  if (item.kind === 'c') {
+    const p = PHONEMES[item.idx];
+    const needsTenseness = hasVoiceType(p);
+    allSelected = quizSelections.place && quizSelections.manner && (!needsTenseness || quizSelections.tenseness);
+  } else if (item.kind === 'mono') {
+    allSelected = quizSelections.height && quizSelections.front && quizSelections.lip;
+  } else {
+    allSelected = quizSelections.glide && quizSelections.base;
+  }
+  document.getElementById('check-btn').disabled = !allSelected;
+}
+
+function markBtns(id, correct) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.querySelectorAll('.quiz-option').forEach(b => {
+    if (b.dataset.val === correct) b.classList.add('correct');
+    else if (b.classList.contains('selected')) b.classList.add('wrong');
+  });
+}
+
+function checkAnswer() {
+  if (quizState.answered) return;
+  quizState.answered = true;
+  quizState.total++;
+  quizState.queuePos++;
+  const item = quizState.currentItem;
+  let allCorrect = false;
+  let labelStr = '';
+
+  if (item.kind === 'c') {
+    const p = PHONEMES[item.idx];
+    const needsTenseness = hasVoiceType(p);
+    const placeOk = quizSelections.place === p.place;
+    const mannerOk = quizSelections.manner === p.manner;
+    const tensenessOk = !needsTenseness || quizSelections.tenseness === p.tenseness;
+    allCorrect = placeOk && mannerOk && tensenessOk;
+    markBtns('q-place', p.place);
+    markBtns('q-manner', p.manner);
+    if (needsTenseness) markBtns('q-tenseness', p.tenseness);
+    labelStr = getPhonemeLabel(p);
+  } else if (item.kind === 'mono') {
+    const v = MONOPHTHONGS[item.idx];
+    allCorrect = quizSelections.height === v.height && quizSelections.front === v.front && quizSelections.lip === v.lip;
+    markBtns('q-height', v.height);
+    markBtns('q-front', v.front);
+    markBtns('q-lip', v.lip);
+    labelStr = `${v.height} · ${v.front} · ${v.lip}`;
+  } else {
+    const v = DIPHTHONGS[item.idx];
+    allCorrect = quizSelections.glide === v.glide && quizSelections.base === v.base;
+    markBtns('q-glide', v.glide);
+    markBtns('q-base', v.base);
+    labelStr = `${v.glide} + ${v.base}`;
+  }
+
+  if (allCorrect) quizState.correct++;
+  updateScore();
+
+  const symbol = item.kind === 'c' ? PHONEMES[item.idx].symbol
+               : item.kind === 'mono' ? MONOPHTHONGS[item.idx].symbol
+               : DIPHTHONGS[item.idx].symbol;
+
+  const resultBox = document.getElementById('result-box');
+  const isLast = quizState.queuePos >= QUIZ_TOTAL;
+  const nextLabel = isLast ? '결과 보기 →' : '다음 문제 →';
+  resultBox.classList.add('show');
+  if (allCorrect) {
+    resultBox.className = 'result-box show correct';
+    resultBox.innerHTML = `✅ 정답입니다! <strong>${symbol}</strong> — ${labelStr}<br>
+      <button class="next-btn" onclick="renderQuiz()">${nextLabel}</button>`;
+  } else {
+    resultBox.className = 'result-box show wrong';
+    resultBox.innerHTML = `❌ 틀렸습니다. <strong>${symbol}</strong>의 정답: <strong>${labelStr}</strong><br>
+      <button class="next-btn" onclick="renderQuiz()">${nextLabel}</button>`;
+  }
+  document.getElementById('check-btn').disabled = true;
+  quizSelections = { place:null, manner:null, tenseness:null, height:null, front:null, lip:null, glide:null, base:null };
+}
+
+// ==================== TABLE MODE ====================
+function renderTable() {
+  // 자음표
+  const places = ['양순', '치조', '(치경)경구개', '연구개', '성문'];
+  const manners = ['파열', '마찰', '파찰', '비음', '유음'];
+  const tensenessMap = {
+    '파열': ['평음', '경음', '격음'],
+    '마찰': ['평음', '경음'],
+    '파찰': ['평음', '경음', '격음'],
+    '비음': null,
+    '유음': null,
+  };
+  let html = `<table class="phoneme-table"><thead><tr>
+    <th>조음 방법</th><th>발성 유형</th>
+    ${places.map(p => `<th>${p}음</th>`).join('')}
+  </tr></thead><tbody>`;
+  manners.forEach(manner => {
+    const tList = tensenessMap[manner];
+    if (!tList) {
+      html += `<tr><td style="color:var(--text-muted);font-size:0.8rem;font-weight:500">${mannerLabel(manner)}</td>
+        <td style="color:var(--text-dim);font-size:0.75rem">—</td>`;
+      places.forEach(place => {
+        const matches = PHONEMES.filter(p => p.place === place && p.manner === manner);
+        html += matches.length === 0
+          ? `<td style="color:var(--text-dim)">—</td>`
+          : `<td class="phoneme-cell" onclick="goToLearn(${PHONEMES.indexOf(matches[0])})">${matches.map(p=>p.symbol).join(' ')}</td>`;
+      });
+      html += '</tr>';
+    } else {
+      tList.forEach((tenseness, ti) => {
+        html += `<tr>`;
+        if (ti === 0) html += `<td rowspan="${tList.length}" style="color:var(--text-muted);font-size:0.8rem;font-weight:500;border-right:1px solid var(--border)">${mannerLabel(manner)}</td>`;
+        html += `<td style="font-size:0.78rem;color:var(--text-muted)">${tenseness}</td>`;
+        places.forEach(place => {
+          if (manner === '마찰' && place === '성문') {
+            if (ti === 0) {
+              const matches = PHONEMES.filter(p => p.place === place && p.manner === manner);
+              html += matches.length === 0
+                ? `<td rowspan="2" style="color:var(--text-dim)">—</td>`
+                : `<td rowspan="2" class="phoneme-cell" style="vertical-align:middle" onclick="goToLearn(${PHONEMES.indexOf(matches[0])})">${matches.map(p=>p.symbol).join(' ')}</td>`;
+            }
+          } else {
+            const matches = PHONEMES.filter(p => p.place === place && p.manner === manner && p.tenseness === tenseness);
+            html += matches.length === 0
+              ? `<td style="color:var(--text-dim)">—</td>`
+              : `<td class="phoneme-cell" onclick="goToLearn(${PHONEMES.indexOf(matches[0])})">${matches.map(p=>p.symbol).join(' ')}</td>`;
+          }
+        });
+        html += '</tr>';
+      });
+    }
+  });
+  html += '</tbody></table>';
+  document.getElementById('table-content').innerHTML = html;
+
+  // 단모음표
+  let monoHtml = `<table class="phoneme-table"><thead><tr>
+    <th>모음</th><th>IPA</th><th>혀의 고저</th><th>혀의 전후</th><th>입술 모양</th>
+  </tr></thead><tbody>`;
+  MONOPHTHONGS.forEach((v, i) => {
+    monoHtml += `<tr>
+      <td class="phoneme-cell" style="font-size:1.1rem" onclick="goToVowel('mono',${i})">${v.symbol}</td>
+      <td style="font-size:1.15rem;color:var(--accent4);font-weight:500">${boostIPA(v.ipa)}</td>
+      <td style="font-size:0.85rem">${v.front}</td>
+      <td style="font-size:0.85rem">${v.lip}</td>
+    </tr>`;
+  });
+  monoHtml += '</tbody></table>';
+  document.getElementById('table-monophthong').innerHTML = monoHtml;
+
+  // 이중모음표
+  let diHtml = `<table class="phoneme-table"><thead><tr>
+    <th>모음</th><th>IPA</th><th>활음 계열</th><th>기반 단모음</th>
+  </tr></thead><tbody>`;
+  DIPHTHONGS.forEach((v, i) => {
+    diHtml += `<tr>
+      <td class="phoneme-cell" style="font-size:1.1rem" onclick="goToVowel('di',${i})">${v.symbol}</td>
+      <td style="font-size:1.15rem;color:var(--accent4);font-weight:500">${boostIPA(v.ipa)}</td>
+      <td style="font-size:0.85rem">${v.glide}</td>
+      <td style="font-size:0.85rem">${v.base}</td>
+    </tr>`;
+  });
+  diHtml += '</tbody></table>';
+  document.getElementById('table-diphthong').innerHTML = diHtml;
+}
+
+function goToLearn(idx) {
+  setMode('learn');
+  selectPhoneme(idx);
+  scrollToContent();
+}
+
+function goToVowel(vtype, idx) {
+  setMode('learn');
+  selectVowel(vtype, idx);
+  scrollToContent();
+}
+
+// ==================== MODE ====================
+function setMode(mode) {
+  clearInterval(stepTimer);
+  document.querySelectorAll('.mode-tab').forEach((t, i) => {
+    t.classList.toggle('active', ['learn','quiz','table'][i] === mode);
+  });
+  document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`mode-${mode}`).classList.add('active');
+
+  const panel = document.querySelector('.phoneme-panel');
+  const main = document.querySelector('.main');
+  const isMobile = window.innerWidth <= 900;
+
+  if (mode === 'quiz' || mode === 'table') {
+    panel.style.display = 'none';
+    main.style.gridTemplateColumns = '1fr';
+  } else {
+    panel.style.display = '';
+    main.style.gridTemplateColumns = isMobile ? '1fr' : '340px 1fr';
+  }
+
+  if (mode === 'quiz') {
+    quizSelections = { place:null, manner:null, tenseness:null, height:null, front:null, lip:null, glide:null, base:null };
+    if (quizState.queue.length === 0) quizState.queue = makeQuizQueue();
+    renderQuiz();
+  } else if (mode === 'table') {
+    renderTable();
+  } else if (mode === 'learn' && currentIdx >= 0) {
+    renderLearnMode(PHONEMES[currentIdx]);
+  }
+}
+
+// ==================== GOOGLE SHEETS 연동 ====================
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxHFdj4E_LnUmRDteh7o8FHj0w1M0qwWDBseAnQDrI24gM7HUpxw159BHSfVvzBe6f1qQ/exec';
+
+function sendScore(quizType, correct, total) {
+  const name = sessionStorage.getItem('userName') || '익명';
+  const now = new Date();
+  const date = now.toLocaleDateString('ko-KR', {year:'numeric', month:'2-digit', day:'2-digit'});
+  const time = now.toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  const params = new URLSearchParams({
+    name,
+    date,
+    time,
+    site: '음운학습',
+    quiz: quizType,
+    score: correct + '/' + total
+  });
+  fetch(SHEETS_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' }).catch(() => {});
+}
+
+// ==================== INIT ====================
+renderPhonemeList();
+</script>
+
+<footer style="
+  text-align: center;
+  padding: 1.8rem 2rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  line-height: 1.9;
+">
+  <p>본 사이트는 비영리 학습 목적의 사이트입니다.</p>
+  <p>
+    문의처 : 인스타그램 <a href="https://instagram.com/slp_girin" target="_blank" style="color:var(--accent);text-decoration:none;">@slp_girin</a>
+    &nbsp;·&nbsp;
+    이메일 <a href="mailto:leemijin1006@naver.com" style="color:var(--accent);text-decoration:none;">leemijin1006@naver.com</a>
+  </p>
+</footer>
+</body>
+</html>
