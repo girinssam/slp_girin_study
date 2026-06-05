@@ -916,15 +916,33 @@ function sendScore(quizType, correct, total) {
   const now = new Date();
   const date = now.toLocaleDateString('ko-KR', {year:'numeric', month:'2-digit', day:'2-digit'});
   const time = now.toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
-  const params = new URLSearchParams({
-    name,
-    date,
-    time,
-    site: '변별자질학습',
-    quiz: quizType,
-    score: correct + '/' + total
+  const fields = { name, date, time, site: '변별자질학습', quiz: quizType, score: correct + '/' + total };
+
+  const iframe = document.createElement('iframe');
+  iframe.name = '_score_frame_' + Date.now();
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = SHEETS_URL;
+  form.target = iframe.name;
+
+  Object.entries(fields).forEach(([key, val]) => {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key;
+    input.value = val;
+    form.appendChild(input);
   });
-  fetch(SHEETS_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' }).catch(() => {});
+
+  document.body.appendChild(form);
+  form.submit();
+
+  setTimeout(() => {
+    document.body.removeChild(form);
+    document.body.removeChild(iframe);
+  }, 4000);
 }
 </script>
 
