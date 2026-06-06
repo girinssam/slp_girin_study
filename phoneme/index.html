@@ -8,17 +8,17 @@
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans:wght@400;500&display=swap');
 
   :root {
-    --bg: #f4f6fb;
+    --bg: #f0f4ff;
     --surface: #ffffff;
-    --surface2: #eef1f7;
-    --border: #d0d7e3;
-    --accent: #2563eb;
+    --surface2: #e8eeff;
+    --border: #c5d5f7;
+    --accent: #2b52cc;
     --accent2: #ef4444;
     --accent3: #16a34a;
-    --accent4: #7c3aed;
-    --text: #1e2533;
-    --text-muted: #5a6478;
-    --text-dim: #a0aab8;
+    --accent4: #3b5fd4;
+    --text: #1a2d5a;
+    --text-muted: #4a5fa8;
+    --text-dim: #7a94c0;
     --lung: #e17055;
     --trachea: #d4a020;
     --nasal: #3b82f6;
@@ -44,7 +44,7 @@
   header {
     padding: 2rem 2rem 1rem;
     border-bottom: 1px solid var(--border);
-    background: linear-gradient(135deg, #eef1f7 0%, #dde4f5 100%);
+    background: linear-gradient(135deg, #e8eeff 0%, #c7d8ff 100%);
   }
 
   header h1 {
@@ -87,7 +87,7 @@
   .mode-tab.active {
     background: var(--accent);
     border-color: var(--accent);
-    color: #000;
+    color: #fff;
     font-weight: 700;
   }
 
@@ -148,7 +148,7 @@
   .phoneme-btn.active {
     background: var(--accent);
     border-color: var(--accent);
-    color: #000;
+    color: #fff;
     font-weight: 700;
   }
 
@@ -307,7 +307,7 @@
   }
 
   .badge-place { background: rgba(253, 121, 168, 0.15); color: #fd79a8; border: 1px solid rgba(253, 121, 168, 0.3); }
-  .badge-manner { background: rgba(88, 166, 255, 0.15); color: var(--accent); border: 1px solid rgba(88, 166, 255, 0.3); }
+  .badge-manner { background: rgba(43, 82, 204, 0.12); color: var(--accent); border: 1px solid rgba(43, 82, 204, 0.3); }
   .badge-voice { background: rgba(86, 211, 100, 0.15); color: var(--accent3); border: 1px solid rgba(86, 211, 100, 0.3); }
 
   /* SVG ANIMATION AREA */
@@ -352,7 +352,7 @@
   }
 
   .anim-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .anim-btn.playing { background: var(--accent); border-color: var(--accent); color: #000; }
+  .anim-btn.playing { background: var(--accent); border-color: var(--accent); color: #fff; }
 
   /* Description box */
   .desc-box {
@@ -440,9 +440,9 @@
   }
 
   .quiz-option:hover { border-color: var(--accent); color: var(--accent); }
-  .quiz-option.selected { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
-  .quiz-option.correct { background: var(--accent3); border-color: var(--accent3); color: #000; font-weight: 600; }
-  .quiz-option.wrong { background: var(--accent2); border-color: var(--accent2); color: #000; }
+  .quiz-option.selected { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  .quiz-option.correct { background: var(--accent3); border-color: var(--accent3); color: #fff; font-weight: 600; }
+  .quiz-option.wrong { background: var(--accent2); border-color: var(--accent2); color: #fff; }
 
   .check-btn {
     width: 100%;
@@ -450,7 +450,7 @@
     background: var(--accent);
     border: none;
     border-radius: 10px;
-    color: #000;
+    color: #fff;
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
@@ -595,7 +595,7 @@
   }
 
   .phoneme-table td.phoneme-cell:hover {
-    background: rgba(88, 166, 255, 0.1);
+    background: rgba(43, 82, 204, 0.1);
   }
 
   /* Responsive */

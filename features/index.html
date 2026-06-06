@@ -212,6 +212,25 @@
     box-shadow: 0 4px 12px rgba(134,239,172,0.25);
   }
   .opt-btn:disabled { cursor: default; }
+
+  /* 과제 2 선택지 — 파란색 계열 */
+  #q2-options .opt-btn {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+  }
+  #q2-options .opt-btn:hover:not(:disabled) {
+    border-color: #93c5fd;
+    background: #dbeafe;
+    box-shadow: 0 4px 12px rgba(147, 197, 253, 0.3);
+    transform: translateY(-2px);
+  }
+  #q2-options .opt-btn.correct {
+    border-color: #2563eb; background: #dbeafe; color: #1d4ed8;
+  }
+  #tab-task2 .feedback.correct {
+    background: #dbeafe; color: #1d4ed8; border-color: #93c5fd;
+  }
+
   .opt-btn.correct {
     border-color: var(--c2d); background: var(--c2l);
     color: var(--c2d); font-weight: 500;
@@ -430,6 +449,13 @@
     font-family: 'Gowun Dodum', sans-serif;
     font-size: 17px; color: #15803d; margin-bottom: 6px;
   }
+  .feat-card-name.grp-main { color: #854d0e; }
+  .feat-card-name.grp-cons { color: #15803d; }
+  .feat-card-name.grp-vowel { color: #1e40af; }
+
+  .feat-card.grp-main { border-color: #fcd34d; }
+  .feat-card.grp-vowel { border-color: #93c5fd; }
+
   .feat-card-desc {
     font-size: 13px; color: var(--text2);
     line-height: 1.7; margin-bottom: 8px;
@@ -439,6 +465,9 @@
     border-radius: 99px; font-size: 12px;
     background: var(--c2l); color: var(--c2d); font-weight: 500;
   }
+  .feat-card-plus.grp-main { background: #fef9c3; color: #854d0e; }
+  .feat-card-plus.grp-cons { background: var(--c2l); color: var(--c2d); }
+  .feat-card-plus.grp-vowel { background: #dbeafe; color: #1e40af; }
   .plus-label { font-weight: 700; margin-right: 4px; }
 </style>
 </head>
@@ -866,11 +895,17 @@ function showRef(type,btn){
   btn.classList.add('active');
   const wrap=document.getElementById('ref-content');
   if(type==='featdesc'){
+    const grpMap = {
+      '공명성':'grp-main','자음성':'grp-main','성절성':'grp-main',
+      '지속성':'grp-cons','지연개방성':'grp-cons','설측성':'grp-cons',
+      '설정성':'grp-cons','전방성':'grp-cons','긴장성':'grp-cons','기식성':'grp-cons',
+      '고설성':'grp-vowel','저설성':'grp-vowel','후설성':'grp-vowel','원순성':'grp-vowel'
+    };
     wrap.innerHTML=`<div class="feat-cards">${FEAT_NAMES.map(f=>`
-      <div class="feat-card">
-        <div class="feat-card-name">${f}</div>
+      <div class="feat-card ${grpMap[f]}">
+        <div class="feat-card-name ${grpMap[f]}">${f}</div>
         <div class="feat-card-desc">${FEAT_INFO[f].desc}</div>
-        <span class="feat-card-plus"><span class="plus-label">+</span>${FEAT_INFO[f].plus}</span>
+        <span class="feat-card-plus ${grpMap[f]}"><span class="plus-label">+</span>${FEAT_INFO[f].plus}</span>
       </div>`).join('')}</div>`;
     return;
   }
