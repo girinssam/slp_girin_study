@@ -692,7 +692,13 @@ function checkAnswer(input,keys){
 
 // ─ 과제 1 ─
 let q1Idx=0,q1C=0,q1T=0,q1O=[];
-function initQ1(){q1O=shuffle([...Array(FEAT_NAMES.length).keys()]);q1Idx=0;q1C=0;q1T=0;renderQ1();}
+function initQ1(){
+  document.getElementById('q1-body').innerHTML=
+    '<div class="quiz-question">이 변별자질의 의미는 무엇인가요?</div>'+
+    '<div class="quiz-feat" id="q1-feat"></div>'+
+    '<div class="options-grid" id="q1-options"></div>';
+  q1O=shuffle([...Array(FEAT_NAMES.length).keys()]);q1Idx=0;q1C=0;q1T=0;renderQ1();
+}
 function renderQ1(){
   const tot=FEAT_NAMES.length;
   document.getElementById('prog1').style.width=Math.round(q1Idx/tot*100)+'%';
@@ -951,33 +957,8 @@ function sendScore(quizType, correct, total) {
   const now = new Date();
   const date = now.toLocaleDateString('ko-KR', {year:'numeric', month:'2-digit', day:'2-digit'});
   const time = now.toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
-  const fields = { name, date, time, site: '변별자질학습', quiz: quizType, score: correct + '/' + total };
-
-  const iframe = document.createElement('iframe');
-  iframe.name = '_score_frame_' + Date.now();
-  iframe.style.display = 'none';
-  document.body.appendChild(iframe);
-
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = SHEETS_URL;
-  form.target = iframe.name;
-
-  Object.entries(fields).forEach(([key, val]) => {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = key;
-    input.value = val;
-    form.appendChild(input);
-  });
-
-  document.body.appendChild(form);
-  form.submit();
-
-  setTimeout(() => {
-    document.body.removeChild(form);
-    document.body.removeChild(iframe);
-  }, 4000);
+  const body = new URLSearchParams({ name, date, time, site: '변별자질학습', quiz: quizType, score: correct + '/' + total });
+  fetch(SHEETS_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
 }
 </script>
 
