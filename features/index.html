@@ -691,13 +691,13 @@ function checkAnswer(input,keys){
 }
 
 // ─ 과제 1 ─
-let q1Idx=0,q1C=0,q1T=0,q1O=[];
+let q1Idx=0,q1C=0,q1T=0,q1O=[],q1CorrectList=[],q1WrongList=[];
 function initQ1(){
   document.getElementById('q1-body').innerHTML=
     '<div class="quiz-question">이 변별자질의 의미는 무엇인가요?</div>'+
     '<div class="quiz-feat" id="q1-feat"></div>'+
     '<div class="options-grid" id="q1-options"></div>';
-  q1O=shuffle([...Array(FEAT_NAMES.length).keys()]);q1Idx=0;q1C=0;q1T=0;renderQ1();
+  q1O=shuffle([...Array(FEAT_NAMES.length).keys()]);q1Idx=0;q1C=0;q1T=0;q1CorrectList=[];q1WrongList=[];renderQ1();
 }
 function renderQ1(){
   const tot=FEAT_NAMES.length;
@@ -705,7 +705,7 @@ function renderQ1(){
   document.getElementById('prog1-text').textContent=q1Idx+' / '+tot;
   document.getElementById('score1').textContent=q1C+' / '+q1T;
   if(q1Idx>=tot){
-    sendScore('과제1-의미연결', q1C, q1T);
+    sendScore('과제1-의미연결', q1C, q1T, q1CorrectList, q1WrongList);
     document.getElementById('q1-body').innerHTML=`<div class="complete-box"><div class="complete-emoji">🎊</div><p>모든 문제 완료!<br>최종 점수: ${q1C} / ${q1T}</p><button class="retry-btn" onclick="initQ1()">다시 풀기</button></div>`;
     document.getElementById('q1-feedback').style.display='none';
     document.getElementById('next1').classList.remove('visible');return;
@@ -729,8 +729,8 @@ function checkQ1(btn,ok,correct,feat){
     else if(b===btn&&!ok)b.classList.add('wrong');
   });
   const fb=document.getElementById('q1-feedback');
-  if(ok){q1C++;fb.className='feedback correct';fb.textContent='✓ 정답이에요!  +값 음소: '+FEAT_INFO[feat].plus;}
-  else{fb.className='feedback wrong';fb.textContent='✗ 아쉽네요. 정답: "'+correct+'"  |  +값 음소: '+FEAT_INFO[feat].plus;}
+  if(ok){q1C++;q1CorrectList.push(feat);fb.className='feedback correct';fb.textContent='✓ 정답이에요!  +값 음소: '+FEAT_INFO[feat].plus;}
+  else{q1WrongList.push(feat);fb.className='feedback wrong';fb.textContent='✗ 아쉽네요. 정답: "'+correct+'"  |  +값 음소: '+FEAT_INFO[feat].plus;}
   fb.style.display='block';
   document.getElementById('next1').classList.add('visible');
   document.getElementById('score1').textContent=q1C+' / '+q1T;
@@ -738,15 +738,15 @@ function checkQ1(btn,ok,correct,feat){
 function nextQ1(){q1Idx++;renderQ1();}
 
 // ─ 과제 2 ─
-let q2Idx=0,q2C=0,q2T=0,q2O=[];
-function initQ2(){q2O=shuffle([...Array(Q2_DATA.length).keys()]);q2Idx=0;q2C=0;q2T=0;renderQ2();}
+let q2Idx=0,q2C=0,q2T=0,q2O=[],q2CorrectList=[],q2WrongList=[];
+function initQ2(){q2O=shuffle([...Array(Q2_DATA.length).keys()]);q2Idx=0;q2C=0;q2T=0;q2CorrectList=[];q2WrongList=[];renderQ2();}
 function renderQ2(){
   const tot=Q2_DATA.length;
   document.getElementById('prog2').style.width=Math.round(q2Idx/tot*100)+'%';
   document.getElementById('prog2-text').textContent=q2Idx+' / '+tot;
   document.getElementById('score2').textContent=q2C+' / '+q2T;
   if(q2Idx>=tot){
-    sendScore('과제2-플러스값', q2C, q2T);
+    sendScore('과제2-플러스값', q2C, q2T, q2CorrectList, q2WrongList);
     document.getElementById('q2-feat').innerHTML=`<div class="complete-box"><div class="complete-emoji">🎊</div><p>모든 문제 완료!<br>최종 점수: ${q2C} / ${q2T}</p><button class="retry-btn" onclick="initQ2()">다시 풀기</button></div>`;
     document.getElementById('q2-desc').textContent='';
     document.getElementById('q2-options').innerHTML='';
@@ -772,8 +772,8 @@ function checkQ2(btn,ok,correct,feat){
     else if(b===btn&&!ok)b.classList.add('wrong');
   });
   const fb=document.getElementById('q2-feedback');
-  if(ok){q2C++;fb.className='feedback correct';fb.textContent='✓ 정답이에요!';}
-  else{fb.className='feedback wrong';fb.textContent='✗ 아쉽네요. 정답: '+correct;}
+  if(ok){q2C++;q2CorrectList.push(feat);fb.className='feedback correct';fb.textContent='✓ 정답이에요!';}
+  else{q2WrongList.push(feat);fb.className='feedback wrong';fb.textContent='✗ 아쉽네요. 정답: '+correct;}
   fb.style.display='block';
   document.getElementById('next2').classList.add('visible');
   document.getElementById('score2').textContent=q2C+' / '+q2T;
@@ -810,14 +810,14 @@ const VOWEL_PAIRS = buildPairsFromGroup([...PHONEMES.vowels, ...PHONEMES.glides]
 const ALL_PAIRS = [...CONSONANT_PAIRS, ...VOWEL_PAIRS];
 
 const Q3_ROUND_SIZE = 15;
-let q3Pool = [], q3Idx=0, q3C=0, q3T=0;
+let q3Pool = [], q3Idx=0, q3C=0, q3T=0, q3CorrectList=[], q3WrongList=[];
 
 function initQ3() {
   // 자음 쌍과 모음+활음 쌍에서 각각 겹치지 않게 섞어서 뽑기
   const consPicks = shuffle([...CONSONANT_PAIRS]).slice(0, 10);
   const vowelPicks = shuffle([...VOWEL_PAIRS]).slice(0, 5);
   q3Pool = shuffle([...consPicks, ...vowelPicks]);
-  q3Idx = 0; q3C = 0; q3T = 0;
+  q3Idx = 0; q3C = 0; q3T = 0; q3CorrectList = []; q3WrongList = [];
   renderQ3();
 }
 
@@ -830,7 +830,7 @@ function renderQ3() {
   document.getElementById('q3-submit').style.display = '';
 
   if (q3Idx >= tot) {
-    sendScore('과제3-음소구분', q3C, q3T);
+    sendScore('과제3-음소구분', q3C, q3T, q3CorrectList, q3WrongList);
     document.getElementById('q3-pair').innerHTML = `<div class="complete-box" style="width:100%"><div class="complete-emoji">🎊</div><p>라운드 완료!<br>최종 점수: ${q3C} / ${q3T}</p><button class="retry-btn" onclick="initQ3()">새 문제 뽑기</button></div>`;
     ['q3-hint','q3-guide'].forEach(id => document.getElementById(id).textContent = '');
     document.getElementById('q3-input').style.display = 'none';
@@ -886,9 +886,9 @@ async function checkQ3(){
   }catch(e){}
   document.getElementById('q3-loading').style.display='none';
   const fb=document.getElementById('q3-feedback');
-  if(isFull){q3C++;fb.className='feedback correct';fb.textContent='✓ 정답이에요! '+keyStr;}
-  else if(isPartial){fb.className='feedback partial';fb.textContent='△ 일부만 맞았어요. 정답: '+keyStr;}
-  else{fb.className='feedback wrong';fb.textContent='✗ 아쉽네요. 정답: '+keyStr;}
+  if(isFull){q3C++;q3CorrectList.push(qi.p1+' vs '+qi.p2);fb.className='feedback correct';fb.textContent='✓ 정답이에요! '+keyStr;}
+  else if(isPartial){q3WrongList.push(qi.p1+' vs '+qi.p2);fb.className='feedback partial';fb.textContent='△ 일부만 맞았어요. 정답: '+keyStr;}
+  else{q3WrongList.push(qi.p1+' vs '+qi.p2);fb.className='feedback wrong';fb.textContent='✗ 아쉽네요. 정답: '+keyStr;}
   fb.style.display='block';
   document.getElementById('score3').textContent=q3C+' / '+q3T;
   document.getElementById('next3').classList.add('visible');
@@ -952,7 +952,7 @@ showRef('consonants',document.querySelector('.ref-tab'));
 // ── Google Forms 연동 ──
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScZE_oqaqLaYR8qcfWbKgOO6BqAPeYyogD3kyrBNeAlljzeNg/formResponse';
 
-function sendScore(quizType, correct, total) {
+function sendScore(quizType, correct, total, correctList = [], wrongList = []) {
   const name = sessionStorage.getItem('userName') || '익명';
   const now = new Date();
   const date = now.toLocaleDateString('ko-KR', {year:'numeric', month:'2-digit', day:'2-digit'});
@@ -963,7 +963,9 @@ function sendScore(quizType, correct, total) {
     'entry.1170387258': time,
     'entry.1710734886': '변별자질학습',
     'entry.1806131460': quizType,
-    'entry.564489558': correct + '/' + total
+    'entry.564489558': correct + '/' + total,
+    'entry.979081900': correctList.join(', '),
+    'entry.444280642': wrongList.join(', ')
   });
   fetch(FORM_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
 }

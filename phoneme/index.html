@@ -1279,10 +1279,10 @@ function makeQuizQueue() {
   return pool.slice(0, QUIZ_TOTAL);
 }
 
-let quizState = { correct: 0, total: 0, currentItem: null, answered: false, queue: [], queuePos: 0 };
+let quizState = { correct: 0, total: 0, currentItem: null, answered: false, queue: [], queuePos: 0, correctList: [], wrongList: [] };
 
 function resetQuiz() {
-  quizState = { correct: 0, total: 0, currentItem: null, answered: false, queue: makeQuizQueue(), queuePos: 0 };
+  quizState = { correct: 0, total: 0, currentItem: null, answered: false, queue: makeQuizQueue(), queuePos: 0, correctList: [], wrongList: [] };
   quizSelections = { place: null, manner: null, tenseness: null, height: null, front: null, lip: null, glide: null, base: null };
   updateScore();
   renderQuiz();
@@ -1296,7 +1296,7 @@ function updateScore() {
 function renderQuiz() {
   if (quizState.queuePos >= QUIZ_TOTAL) {
     const quizLabel = currentQuizType === 'consonant' ? '자음퀴즈' : currentQuizType === 'mono' ? '단모음퀴즈' : '이중모음퀴즈';
-    sendScore(quizLabel, quizState.correct, QUIZ_TOTAL);
+    sendScore(quizLabel, quizState.correct, QUIZ_TOTAL, quizState.correctList, quizState.wrongList);
     document.getElementById('quiz-content').innerHTML = `
       <div class="quiz-phoneme-display" style="padding:2.5rem">
         <div style="font-size:3rem;margin-bottom:1rem">🎉</div>
@@ -1477,12 +1477,12 @@ function checkAnswer() {
     labelStr = `${v.glide} + ${v.base}`;
   }
 
-  if (allCorrect) quizState.correct++;
-  updateScore();
-
   const symbol = item.kind === 'c' ? PHONEMES[item.idx].symbol
                : item.kind === 'mono' ? MONOPHTHONGS[item.idx].symbol
                : DIPHTHONGS[item.idx].symbol;
+  if (allCorrect) { quizState.correct++; quizState.correctList.push(symbol); }
+  else { quizState.wrongList.push(symbol); }
+  updateScore();
 
   const resultBox = document.getElementById('result-box');
   const isLast = quizState.queuePos >= QUIZ_TOTAL;
@@ -1634,7 +1634,7 @@ function setMode(mode) {
 // ==================== GOOGLE FORMS 연동 ====================
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScZE_oqaqLaYR8qcfWbKgOO6BqAPeYyogD3kyrBNeAlljzeNg/formResponse';
 
-function sendScore(quizType, correct, total) {
+function sendScore(quizType, correct, total, correctList = [], wrongList = []) {
   const name = sessionStorage.getItem('userName') || '익명';
   const now = new Date();
   const date = now.toLocaleDateString('ko-KR', {year:'numeric', month:'2-digit', day:'2-digit'});
@@ -1645,7 +1645,9 @@ function sendScore(quizType, correct, total) {
     'entry.1170387258': time,
     'entry.1710734886': '음운학습',
     'entry.1806131460': quizType,
-    'entry.564489558': correct + '/' + total
+    'entry.564489558': correct + '/' + total,
+    'entry.979081900': correctList.join(', '),
+    'entry.444280642': wrongList.join(', ')
   });
   fetch(FORM_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
 }
