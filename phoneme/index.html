@@ -1631,17 +1631,23 @@ function setMode(mode) {
   }
 }
 
-// ==================== GOOGLE SHEETS 연동 ====================
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyMvqHXiV4FaG6TZH45Ve4gwbWWl-l8dipjrw2Bf67Jy6YGFiDX2wJU3ws6L7ihamYyEg/exec';
+// ==================== GOOGLE FORMS 연동 ====================
+const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScZE_oqaqLaYR8qcfWbKgOO6BqAPeYyogD3kyrBNeAlljzeNg/formResponse';
 
 function sendScore(quizType, correct, total) {
   const name = sessionStorage.getItem('userName') || '익명';
   const now = new Date();
   const date = now.toLocaleDateString('ko-KR', {year:'numeric', month:'2-digit', day:'2-digit'});
   const time = now.toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
-  const url = SHEETS_URL + '?' + new URLSearchParams({ name, date, time, site: '음운학습', quiz: quizType, score: correct + '/' + total });
-  const img = new Image();
-  img.src = url;
+  const body = new URLSearchParams({
+    'entry.988376688': name,
+    'entry.1711239084': date,
+    'entry.1170387258': time,
+    'entry.1710734886': '음운학습',
+    'entry.1806131460': quizType,
+    'entry.564489558': correct + '/' + total
+  });
+  fetch(FORM_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
 }
 
 // ==================== INIT ====================
